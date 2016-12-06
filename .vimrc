@@ -1,0 +1,10 @@
+set hlsearch
+set ts=2
+set sw=2
+set expandtab
+set smarttab
+set smartcase
+set incsearch
+syntax on
+let &t_Co=256
+let mapleader=","
