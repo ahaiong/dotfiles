@@ -5,6 +5,6 @@ set expandtab
 set smarttab
 set smartcase
 set incsearch
+set background=dark 
 syntax on
 let &t_Co=256
-let mapleader=","

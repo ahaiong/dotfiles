@@ -1,21 +1,5 @@
+# This is Git's per-user configuration file.
 [user]
-	email = 
-	name = 
-[core]
-	excludesfile = /Users/aong/.gitignore_global
-[difftool "sourcetree"]
-	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-	path = 
-[mergetool "sourcetree"]
-	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-	trustExitCode = true
-[commit]
-	template = /Users/aong/.stCommitMsg
-[url "ssh://git@github.com/"]
-	insteadOf = https://github.com/
-[url "ssh://git@bitbucket.org/"]
-	insteadOf = https://bitbucket.org/
-[http]
-	proxy = 
-[https]
-	proxy = 
+# Please adapt and uncomment the following lines:
+name = Andrew Ong
+email = andrew.hai.ong@gmail.com
