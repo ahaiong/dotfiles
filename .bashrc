@@ -1,31 +1,36 @@
 # .bashrc
 
-
 # Tailor the prompt
-export PROMPT_COMMAND='echo -ne "\033]0; $(basename $(dirname "$PWD"))/$(basename "$PWD")\007" '
-export PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;36m\]\w\[\033[00m\]$(parse_git_branch) $PYENV_VERSION and $(parse_proxy) \$ '
+#export PROMPT_COMMAND='echo -ne "\033]0; $(basename $(dirname "$PWD"))/$(basename "$PWD")\007" '
+export PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;36m\]\w\[\033[00m\]$(parse_git_branch) and $(parse_proxy) \$ '
 export TERM=xterm-color
 
-# Tell ls to be colourful
+# Let's be colourful
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
-alias ls='ls -G'
+alias grep="grep --color=auto"
+
+if [[ "$system" == "x86_64-darwin" ]]; then
+  alias ls='ls --color=auto'
+else 
+  alias ls='ls -G'
+fi
+
+# Not installed by default, but make them colourful
+alias tree="tree -C"
+#source grc.bashrc
 
 # Set specific colours
 export CLICOLORS=1
 export LSCOLORS=Exfxcxdxbxegedabagacad
 
-# Tell grep to highlight matches
-export GREP_OPTIONS='--color=auto'
-
 # Lets make less sexy
 export LESS='-R'
-export LESSOPEN='|~/.lessfilter %s'
+#export LESSOPEN='|~/.lessfilter %s'
 
 # Lets have an infinite history
-HISTSIZE=""
-
+HISTSIZE="" 
 # What branch is in use
 parse_git_branch() {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
@@ -40,32 +45,12 @@ function parse_proxy {
   fi
 }
 
-# Setup python pyenv
-export WORKON_HOME=~/.python-ve
-export PROJECT_HOME=~/python-workspace
-eval "$(pyenv init -)"
-#pyenv virtualenvwrapper_lazy
-#if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
+#local sbin scripts, not automatically mapped in macOS
+export PATH=$PATH:/usr/local/sbin
 
-# Setup nvm
-export NVM_DIR="$HOME/.nvm"
-. "/usr/local/opt/nvm/nvm.sh"
+#https://github.com/pyenv/pyenv#installation
+#export PYENV_ROOT="$HOME/.pyenv"
+#export PATH="$PYENV_ROOT/bin:$PATH"
+#eval "$(pyenv init -)"
 
-# added by Snowflake SnowSQL installer v1.0
-export PATH=/Applications/SnowSQL.app/Contents/MacOS:$PATH
-
-function px
-{
-    if [[ -z $http_proxy ]]; then
-        export http_proxy='http://s112001:mypassword@fqdn:8080/';
-        export HTTP_PROXY=$http_proxy;
-        export https_proxy=$http_proxy;
-        export HTTPS_PROXY=$http_proxy;
-        export no_proxy='127.0.0.1,localhost,auiag.corp';
-        export NO_PROXY=$no_proxy;
-        echo 'ENABLED IAG http_proxy settings';
-    else
-        unset http_proxy HTTP_PROXY https_proxy HTTPS_PROXY no_proxy NO_PROXY;
-        echo 'DISABLED IAG http_proxy settings';
-    fi
-}
+if [ -e $HOME/.nix-profile/etc/profile.d/nix.sh ]; then . $HOME/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
