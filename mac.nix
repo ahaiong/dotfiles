@@ -14,24 +14,24 @@ mkShell {
   buildInputs = [ 
                   #dotnet-sdk makeWrapper patchelf autoPatchelfHook glibc gcc-unwrapped
                   awscli
-                  docker
+                  #docker
                   figlet
                   git
                   gnupg
                   grc
                   groovy
                   lolcat
-                  mysql
-                  nodejs
+                  #mysql
+                  #nodejs
                   openssl
-                  packer
+                  #packer
                   telnet
-                  terraform
+                  #terraform
                   tree
-                  python27Packages.virtualenv
-                  python27Packages.pip
-                  vagrant
-                  vault
+                  #python27Packages.virtualenv
+                  #python27Packages.pip
+                  #vagrant
+                  #vault
                 ]
   ++ optional stdenv.isLinux libnotify # For ExUnit Notifier on Linux.
   ++ optional stdenv.isLinux inotify-tools # For file_system on Linux.
@@ -42,6 +42,7 @@ mkShell {
     CoreServices
   ]);
   shellHook = ''
+    source bashrc
     figlet "Nix nix!" | lolcat --freq 0.5
     export PS1='\[\033[01;32m\][nix-shell]@\h\[\033[00m\]:\[\033[01;36m\]\w\[\033[00m\]$(parse_git_branch) and $(parse_proxy) \$ '
   '';
