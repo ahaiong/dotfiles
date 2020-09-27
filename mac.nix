@@ -1,5 +1,6 @@
 # This defines a function taking `pkgs` as parameter, and uses
 # `nixpkgs` by default if no argument is passed to it.
+#{ pkgs ? import <nixpkgs> {} }:
 { pkgs ? import <nixpkgs> { config = { allowUnsupportedSystem = true; }; } }:
 # This avoids typing `pkgs.` before each package name.
 with pkgs;
@@ -11,15 +12,26 @@ in
 # Defines a shell.
 mkShell {
   buildInputs = [ 
+                  #dotnet-sdk makeWrapper patchelf autoPatchelfHook glibc gcc-unwrapped
+                  awscli
+                  #docker
                   figlet
                   git
                   gnupg
                   grc
                   groovy
                   lolcat
+                  #mysql
+                  #nodejs
                   openssl
+                  #packer
                   telnet
+                  #terraform
                   tree
+                  #python27Packages.virtualenv
+                  #python27Packages.pip
+                  #vagrant
+                  #vault
                 ]
   ++ optional stdenv.isLinux libnotify # For ExUnit Notifier on Linux.
   ++ optional stdenv.isLinux inotify-tools # For file_system on Linux.
