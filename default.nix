@@ -1,7 +1,8 @@
 # This defines a function taking `pkgs` as parameter, and uses
 # `nixpkgs` by default if no argument is passed to it.
 #{ pkgs ? import <nixpkgs> {} }:
-{ pkgs ? import <nixpkgs> { overlays = [ (import ./nix-overlays/terraform_0_13_0.nix) ]; config = { allowUnsupportedSystem = true; }; } }:
+#{ pkgs ? import <nixpkgs> { config = { allowUnsupportedSystem = true; }; } }:
+{ pkgs ? import <nixpkgs> { overlays = [ (import ./nix-overlays/terraform_0_13_5.nix) ]; config = { allowUnsupportedSystem = true; }; } }:
 # This avoids typing `pkgs.` before each package name.
 with pkgs;
 
@@ -14,27 +15,29 @@ mkShell {
   baseInputs = [];
   buildInputs = [ 
                   pkg-config
-                  nodejs
+                  nodejs-14_x
+                  nodePackages.lerna
                   #cloud
                   awscli
                   azure-cli
                   aws-iam-authenticator
+                  #boto3
                   docker
                   docker-compose
-                  #helm #can not derive
                   keybase
                   kubernetes
+                  kubernetes-helm
                   git
                   gnupg
                   grc
                   groovy
+                  go
                   #irssi
                   openssh
                   openssl
-                  #terraform_0_13
                   #ansible
-                  #python37
-                  #python37Packages.boto
+                  python38
+                  #python38Packages.boto
                   #python27
                   #python27Packages.boto
                   nox
@@ -43,24 +46,31 @@ mkShell {
                   vault
                   vim
                   #obscure packages
+                  dive
                   #general 
                   curl
                   dnsutils
                   envsubst
                   file
                   jq
+                  yq
                   rsync
                   sudo
                   subversion
+                  trivy
                   telnet
                   tree
                   unzip
                   wget
                   which
                   #nix-os
+                  yarn
                   figlet
                   lolcat
-                  terraform_0_13_0
+                  terraform_0_13
+                  putty
+                  postgresql
+                  openvpn
                 ]
   ++ optional stdenv.isLinux libnotify # For ExUnit Notifier on Linux.
   ++ optional stdenv.isLinux inotify-tools # For file_system on Linux.
@@ -74,5 +84,6 @@ mkShell {
     source ~/bashrc
     figlet "Nix nix!" | lolcat --freq 0.5
     export PS1='\[\033[01;32m\][nix-shell]@\h\[\033[00m\]:\[\033[01;36m\]\w\[\033[00m\]$(parse_git_branch) and $(parse_proxy) \$ '
+    export PATH="$PWD/node_modules/.bin/:$PATH"
   '';
 }
