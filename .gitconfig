@@ -3,3 +3,7 @@
 # Please adapt and uncomment the following lines:
 name = Andrew Ong
 email = andrew.hai.ong@gmail.com
+
+
+[core]
+autocrlf = true
