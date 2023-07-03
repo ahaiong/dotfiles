@@ -1,5 +1,7 @@
 # bashrc
 
+mkdir -p $HOME/.logs
+
 # Tailor the prompt
 #export PROMPT_COMMAND='echo -ne "\033]0; $(basename $(dirname "$PWD"))/$(basename "$PWD")\007" '
 export PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;36m\]\w\[\033[00m\]$(parse_git_branch) and $(parse_proxy) \$ '
@@ -30,7 +32,12 @@ export LESS='-R'
 #export LESSOPEN='|~/.lessfilter %s'
 
 # Lets have an infinite history
+HISTCONTROL=ignoredups:erasedups
+HISTIGNORE="ll:bg:fg:history"
+HISTFILE=$HOME/.logs/$(tty | awk -F "/" '{print $NF}')_$(date +"%Y%m%d")_bash_history
 HISTSIZE="" 
+shopt -s histappend
+
 # What branch is in use
 parse_git_branch() {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
@@ -44,6 +51,10 @@ function parse_proxy {
     echo "proxy off"
   fi
 }
+
+#function saveLast {
+#  fc -ln "$1" "$1" | sed '1s/^[[:space:]]*//'
+#}
 
 #local sbin scripts, not automatically mapped in macOS
 export PATH=$PATH:/usr/local/sbin
