@@ -12,12 +12,13 @@ on:
         # Friendly description to be shown in the UI instead of 'name'
         description: 'Production blue-green slot'
         # Default value if no value is explicitly provided
-        default: 'Change me'
+        default: 'change me'
         # Input has to be provided for the workflow to run
         required: true
         # The data type of the input
         type: choice
         options:
+          - change me
           - alpha
           - beta
 
