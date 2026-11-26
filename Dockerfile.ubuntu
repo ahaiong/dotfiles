@@ -1,0 +1,30 @@
+FROM ubuntu:24.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        bash \
+        ca-certificates \
+        curl \
+        git \
+        xz-utils \
+    && rm -rf /var/lib/apt/lists/* \
+    && useradd --create-home --shell /bin/bash developer \
+    && mkdir -p /nix /workspace \
+    && chown -R developer:developer /nix /workspace
+
+USER developer
+
+ENV HOME=/home/developer
+ENV USER=developer
+ENV PATH=/home/developer/.nix-profile/bin:/nix/var/nix/profiles/default/bin:$PATH
+
+RUN curl --proto '=https' --tlsv1.2 -L https://nixos.org/nix/install \
+    | sh -s -- --no-daemon
+
+WORKDIR /workspace
+
+COPY default.nix /opt/nix-shell/default.nix
+
+ENTRYPOINT ["bash", "-lc", "source \"$HOME/.nix-profile/etc/profile.d/nix.sh\" && exec nix-shell /opt/nix-shell/default.nix"]
